@@ -19,11 +19,7 @@ public class Folder implements FileItem {
     // In addition, we need to count all the files in the folder,
     // and all the files in the folder's folders, etc.!
     public int countFiles() {
-        int count = 1;
-
-        // Use recursion to count the files
-        // We don't need a base case because the
-        // files are the "base case"
+        int count = 512;
         for (int i = 0; i < items.size(); i++) {
             FileItem item = items.get(i);
             count += item.countFiles();
@@ -41,8 +37,13 @@ public class Folder implements FileItem {
     // file1 which is size 200, file2 which is size 300, and file3 which is size 150.
     // Then, the size of folder1 = 512 + 128*3 + 200 + 300 + 150 = 1546.
     public int calculateSize() {
-        // YOUR CODE HERE
-        return -1;
+        int count = 512;
+        for (int i = 0; i < items.size(); i++) {
+            FileItem item = items.get(i);
+            count += item.calculateSize();
+        }
+
+        return 128*items.size()+ count;
     }
 
     // Creates a copy of the current FileItem
@@ -55,8 +56,11 @@ public class Folder implements FileItem {
     // copy() method should be called on all FileItems in the folder, such
     // that the contents of the folder is copied as well.
     public FileItem copy() {
-        // YOUR CODE HERE
-        return null;
+        Folder newFolder = new Folder(this.folderName + "_copy");
+        for (FileItem item : items) {
+            newFolder.addToFolder(item.copy());
+        }
+        return newFolder;
     }
 
     // toString method
